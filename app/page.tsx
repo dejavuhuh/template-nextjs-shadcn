@@ -1,24 +1,13 @@
-'use client'
-
-import { Button } from '@/components/ui/button'
-import { toast } from 'sonner'
+import { AppSidebar } from '@/components/app-sidebar'
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 
 export default function NotificationDemo() {
   return (
-    <Button
-      key={1}
-      variant="outline"
-      onClick={() => {
-        toast('Your request was completed!', {
-          description: 'It was a long journey, but we made it!',
-          action: {
-            label: 'Undo',
-            onClick: () => {},
-          },
-        })
-      }}
-    >
-      Show sonner
-    </Button>
+    <SidebarProvider>
+      <AppSidebar />
+      <main>
+        <SidebarTrigger />
+      </main>
+    </SidebarProvider>
   )
 }

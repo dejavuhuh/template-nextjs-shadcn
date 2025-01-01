@@ -11,8 +11,12 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-sans)'],
-        mono: ['var(--font-mono)'],
+        sans: [
+          'var(--font-sans)',
+        ],
+        mono: [
+          'var(--font-mono)',
+        ],
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -53,23 +57,49 @@ const config: Config = {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
+        sidebar: {
+          'DEFAULT': 'hsl(var(--sidebar-background))',
+          'foreground': 'hsl(var(--sidebar-foreground))',
+          'primary': 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          'accent': 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          'border': 'hsl(var(--sidebar-border))',
+          'ring': 'hsl(var(--sidebar-ring))',
+        },
       },
       keyframes: {
         'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' },
+          from: {
+            height: '0',
+          },
+          to: {
+            height: 'var(--radix-accordion-content-height)',
+          },
         },
         'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' },
+          from: {
+            height: 'var(--radix-accordion-content-height)',
+          },
+          to: {
+            height: '0',
+          },
         },
         'collapsible-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-collapsible-content-height)' },
+          from: {
+            height: '0',
+          },
+          to: {
+            height: 'var(--radix-collapsible-content-height)',
+          },
         },
         'collapsible-up': {
-          from: { height: 'var(--radix-collapsible-content-height)' },
-          to: { height: '0' },
+          from: {
+            height: 'var(--radix-collapsible-content-height)',
+          },
+          to: {
+            height: '0',
+          },
         },
       },
       animation: {
