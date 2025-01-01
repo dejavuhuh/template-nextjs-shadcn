@@ -7,7 +7,6 @@ export default antfu(
     react: {
       overrides: {
         'style/jsx-sort-props': ['error', {
-          shorthandFirst: true,
           reservedFirst: true,
           multiline: 'last',
           callbacksLast: true,
