@@ -347,8 +347,8 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
 
       const Item = (
         <CommandItem
-          value={inputValue}
           className="cursor-pointer"
+          value={inputValue}
           onMouseDown={(e) => {
             e.preventDefault()
             e.stopPropagation()
@@ -388,7 +388,7 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
       // For async search that showing emptyIndicator
       if (onSearch && !creatable && Object.keys(options).length === 0) {
         return (
-          <CommandItem value="-" disabled>
+          <CommandItem disabled value="-">
             {emptyIndicator}
           </CommandItem>
         )
@@ -421,15 +421,15 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
       <Command
         ref={dropdownRef}
         {...commandProps}
+        className={cn('h-auto overflow-visible bg-transparent', commandProps?.className)}
+        filter={commandFilter()}
+        shouldFilter={
+          commandProps?.shouldFilter !== undefined ? commandProps.shouldFilter : !onSearch
+        } // When onSearch is provided, we don&lsquo;t want to filter the options. You can still override it.
         onKeyDown={(e) => {
           handleKeyDown(e)
           commandProps?.onKeyDown?.(e)
         }}
-        className={cn('h-auto overflow-visible bg-transparent', commandProps?.className)}
-        shouldFilter={
-          commandProps?.shouldFilter !== undefined ? commandProps.shouldFilter : !onSearch
-        } // When onSearch is provided, we don&lsquo;t want to filter the options. You can still override it.
-        filter={commandFilter()}
       >
         <div
           className={cn(
@@ -452,17 +452,19 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
               return (
                 <div
                   key={option.value}
+                  data-disabled={disabled || undefined}
+                  data-fixed={option.fixed}
                   className={cn(
                     'animate-fadeIn relative inline-flex h-7 cursor-default items-center rounded-md border border-solid bg-background pe-7 pl-2 ps-2 text-xs font-medium text-secondary-foreground transition-all hover:bg-background disabled:cursor-not-allowed disabled:opacity-50 data-[fixed]:pe-2',
                     badgeClassName,
                   )}
-                  data-fixed={option.fixed}
-                  data-disabled={disabled || undefined}
                 >
                   {option.label}
                   <button
-                    type="button"
+                    aria-label="Remove"
                     className="absolute -inset-y-px -end-px flex size-7 items-center justify-center rounded-e-lg border border-transparent p-0 text-muted-foreground/80 outline-0 transition-colors hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70"
+                    type="button"
+                    onClick={() => handleUnselect(option)}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         handleUnselect(option)
@@ -472,10 +474,8 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
                       e.preventDefault()
                       e.stopPropagation()
                     }}
-                    onClick={() => handleUnselect(option)}
-                    aria-label="Remove"
                   >
-                    <X size={14} strokeWidth={2} aria-hidden="true" />
+                    <X aria-hidden="true" size={14} strokeWidth={2} />
                   </button>
                 </div>
               )
@@ -484,12 +484,18 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
             <CommandPrimitive.Input
               {...inputProps}
               ref={inputRef}
-              value={inputValue}
               disabled={disabled}
-              onValueChange={(value) => {
-                setInputValue(value)
-                inputProps?.onValueChange?.(value)
-              }}
+              placeholder={hidePlaceholderWhenSelected && selected.length !== 0 ? '' : placeholder}
+              value={inputValue}
+              className={cn(
+                'flex-1 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed',
+                {
+                  'w-full': hidePlaceholderWhenSelected,
+                  'px-3 py-2': selected.length === 0,
+                  'ml-1': selected.length !== 0,
+                },
+                inputProps?.className,
+              )}
               onBlur={(event) => {
                 if (!onScrollbar) {
                   setOpen(false)
@@ -503,23 +509,14 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
                 }
                 inputProps?.onFocus?.(event)
               }}
-              placeholder={hidePlaceholderWhenSelected && selected.length !== 0 ? '' : placeholder}
-              className={cn(
-                'flex-1 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed',
-                {
-                  'w-full': hidePlaceholderWhenSelected,
-                  'px-3 py-2': selected.length === 0,
-                  'ml-1': selected.length !== 0,
-                },
-                inputProps?.className,
-              )}
+              onValueChange={(value) => {
+                setInputValue(value)
+                inputProps?.onValueChange?.(value)
+              }}
             />
             <button
+              aria-label="Clear all"
               type="button"
-              onClick={() => {
-                setSelected(selected.filter(s => s.fixed))
-                onChange?.(selected.filter(s => s.fixed))
-              }}
               className={cn(
                 'absolute end-0 top-0 flex size-9 items-center justify-center rounded-lg border border-transparent text-muted-foreground/80 transition-colors hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70',
                 (hideClearAllButton
@@ -528,29 +525,32 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
                   || selected.filter(s => s.fixed).length === selected.length)
                 && 'hidden',
               )}
-              aria-label="Clear all"
+              onClick={() => {
+                setSelected(selected.filter(s => s.fixed))
+                onChange?.(selected.filter(s => s.fixed))
+              }}
             >
-              <X size={16} strokeWidth={2} aria-hidden="true" />
+              <X aria-hidden="true" size={16} strokeWidth={2} />
             </button>
           </div>
         </div>
         <div className="relative">
           <div
+            data-state={open ? 'open' : 'closed'}
             className={cn(
               'absolute top-2 z-10 w-full overflow-hidden rounded-lg border border-input',
               'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
               !open && 'hidden',
             )}
-            data-state={open ? 'open' : 'closed'}
           >
             {open && (
               <CommandList
                 className="bg-popover text-popover-foreground shadow-lg shadow-black/5 outline-none"
-                onMouseLeave={() => {
-                  setOnScrollbar(false)
-                }}
                 onMouseEnter={() => {
                   setOnScrollbar(true)
+                }}
+                onMouseLeave={() => {
+                  setOnScrollbar(false)
                 }}
                 onMouseUp={() => {
                   inputRef?.current?.focus()
@@ -564,16 +564,20 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
                       <>
                         {EmptyItem()}
                         {CreatableItem()}
-                        {!selectFirstItem && <CommandItem value="-" className="hidden" />}
+                        {!selectFirstItem && <CommandItem className="hidden" value="-" />}
                         {Object.entries(selectables).map(([key, dropdowns]) => (
-                          <CommandGroup key={key} heading={key} className="h-full overflow-auto">
+                          <CommandGroup key={key} className="h-full overflow-auto" heading={key}>
                             <>
                               {dropdowns.map((option) => {
                                 return (
                                   <CommandItem
                                     key={option.value}
-                                    value={option.value}
                                     disabled={option.disable}
+                                    value={option.value}
+                                    className={cn(
+                                      'cursor-pointer',
+                                      option.disable && 'cursor-not-allowed opacity-50',
+                                    )}
                                     onMouseDown={(e) => {
                                       e.preventDefault()
                                       e.stopPropagation()
@@ -588,10 +592,6 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
                                       setSelected(newOptions)
                                       onChange?.(newOptions)
                                     }}
-                                    className={cn(
-                                      'cursor-pointer',
-                                      option.disable && 'cursor-not-allowed opacity-50',
-                                    )}
                                   >
                                     {option.label}
                                   </CommandItem>

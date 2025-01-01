@@ -1,18 +1,24 @@
-import { Button } from '@/components/ui/button'
-import { LoaderCircle } from 'lucide-react'
+'use client'
 
-export default function Home() {
+import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
+
+export default function NotificationDemo() {
   return (
-    <Button disabled>
-      <LoaderCircle
-        key={1}
-        aria-hidden="true"
-        className="-ms-1 me-2 animate-spin"
-        size={16}
-        strokeWidth={2}
-        onClick={() => {}}
-      />
-      Button
+    <Button
+      key={1}
+      variant="outline"
+      onClick={() => {
+        toast('Your request was completed!', {
+          description: 'It was a long journey, but we made it!',
+          action: {
+            label: 'Undo',
+            onClick: () => {},
+          },
+        })
+      }}
+    >
+      Show sonner
     </Button>
   )
 }

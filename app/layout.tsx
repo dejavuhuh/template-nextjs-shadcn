@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Toaster as Sonner } from '@/components/ui/sonner'
 import localFont from 'next/font/local'
 import './globals.css'
 
@@ -29,6 +30,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <Sonner />
       </body>
     </html>
   )

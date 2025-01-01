@@ -60,12 +60,12 @@ const ToastAction = React.forwardRef<
 >(({ className, asChild = false, ...props }, ref) => (
   <ToastPrimitives.Action
     ref={ref}
+    asChild={asChild}
     className={cn(
       !asChild
       && 'inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive',
       className,
     )}
-    asChild={asChild}
     {...props}
   >
     {props.children}
@@ -79,13 +79,13 @@ const ToastClose = React.forwardRef<
 >(({ className, asChild = false, ...props }, ref) => (
   <ToastPrimitives.Close
     ref={ref}
+    asChild={asChild}
+    toast-close=""
     className={cn(
       !asChild
       && 'group -my-1.5 -me-2 inline-flex size-8 shrink-0 items-center justify-center whitespace-nowrap rounded-lg p-0 text-sm font-medium ring-offset-background transition-colors hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600 [&_svg]:pointer-events-none [&_svg]:shrink-0',
       className,
     )}
-    toast-close=""
-    asChild={asChild}
     {...props}
   >
     {asChild
@@ -94,10 +94,10 @@ const ToastClose = React.forwardRef<
         )
       : (
           <X
+            aria-hidden="true"
+            className="opacity-60 transition-opacity group-hover:opacity-100"
             size={16}
             strokeWidth={2}
-            className="opacity-60 transition-opacity group-hover:opacity-100"
-            aria-hidden="true"
           />
         )}
   </ToastPrimitives.Close>

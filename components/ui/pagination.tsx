@@ -8,9 +8,9 @@ import * as React from 'react'
 function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
   return (
     <nav
-      role="navigation"
       aria-label="pagination"
       className={cn('mx-auto flex w-full justify-center', className)}
+      role="navigation"
       {...props}
     />
   )
@@ -59,8 +59,8 @@ function PaginationPrevious({
   return (
     <PaginationLink
       aria-label="Go to previous page"
-      size="default"
       className={cn('gap-1 pl-2.5', className)}
+      size="default"
       {...props}
     >
       <ChevronLeft size={16} strokeWidth={2} />
@@ -74,8 +74,8 @@ function PaginationNext({ className, ...props }: React.ComponentProps<typeof Pag
   return (
     <PaginationLink
       aria-label="Go to next page"
-      size="default"
       className={cn('gap-1 pr-2.5', className)}
+      size="default"
       {...props}
     >
       <span>Next</span>

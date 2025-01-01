@@ -35,10 +35,10 @@ const AccordionTrigger = React.forwardRef<
     >
       {children}
       <ChevronDown
+        aria-hidden="true"
+        className="shrink-0 opacity-60 transition-transform duration-200"
         size={16}
         strokeWidth={2}
-        className="shrink-0 opacity-60 transition-transform duration-200"
-        aria-hidden="true"
       />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>

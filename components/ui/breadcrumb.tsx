@@ -55,10 +55,10 @@ const BreadcrumbPage = React.forwardRef<HTMLSpanElement, React.ComponentPropsWit
   ({ className, ...props }, ref) => (
     <span
       ref={ref}
-      role="link"
-      aria-disabled="true"
       aria-current="page"
+      aria-disabled="true"
       className={cn('text-foreground', className)}
+      role="link"
       {...props}
     />
   ),
@@ -67,7 +67,7 @@ BreadcrumbPage.displayName = 'BreadcrumbPage'
 
 function BreadcrumbSeparator({ children, className, ...props }: React.ComponentProps<'li'>) {
   return (
-    <li role="presentation" aria-hidden="true" className={className} {...props}>
+    <li aria-hidden="true" className={className} role="presentation" {...props}>
       {children ?? <ChevronRight size={16} strokeWidth={2} />}
     </li>
   )
@@ -77,9 +77,9 @@ BreadcrumbSeparator.displayName = 'BreadcrumbSeparator'
 function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<'span'>) {
   return (
     <span
-      role="presentation"
       aria-hidden="true"
       className={cn('flex size-5 items-center justify-center', className)}
+      role="presentation"
       {...props}
     >
       <MoreHorizontal size={16} strokeWidth={2} />
